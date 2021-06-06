@@ -27,7 +27,7 @@ uri = os.getenv("DATABASE_URL")  # or other relevant config var
 if uri and uri.startswith("postgres://"):
     uri = uri.replace("postgres://", "postgresql://", 1)
 
-app.config['SQLALCHEMY_DATABASE_URI'] = uri # if uri else 'sqlite:///data.db'
+app.config['SQLALCHEMY_DATABASE_URI'] = uri if uri else 'sqlite:///data.db'
 # to disable Flask SQLALCHEMY track modification access
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS']=False
 app.secret_key = 'loki'
