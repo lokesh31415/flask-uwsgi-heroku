@@ -6,6 +6,8 @@ from resources.user import UserRegister
 from resources.items import Item, ItemList
 from resources.store import Store, StoreList
 from db import db
+import os
+import re
 
 # HTTP status codes
 # 200 - Success
@@ -16,8 +18,16 @@ from db import db
 # 404 - Not found
 # 500 - Internal server error
 
+
+
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///data.db'
+
+# to resolve issue with heroku postgresql connection
+uri = os.getenv("DATABASE_URL")  # or other relevant config var
+if uri and uri.startswith("postgres://"):
+    uri = uri.replace("postgres://", "postgresql://", 1)
+
+app.config['SQLALCHEMY_DATABASE_URI'] = uri # if uri else 'sqlite:///data.db'
 # to disable Flask SQLALCHEMY track modification access
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS']=False
 app.secret_key = 'loki'
